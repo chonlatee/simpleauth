@@ -31,8 +31,6 @@ func main() {
 		authRoute.POST("/register", r.register)
 		authRoute.POST("/login", r.login)
 
-		e.GET("/v1/key/public", r.getPublic)
-
 		if err := e.Start(":8888"); err != nil {
 			e.Logger.Info("shutting down the server")
 		}
