@@ -6,7 +6,7 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/chonlatee/authserver/pkg/models/mariadb"
+	"github.com/chonlatee/simpleauth/pkg/models/mariadb"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -24,7 +24,7 @@ func main() {
 		db := openDB()
 
 		r := route{
-			userModel: &mariadb.UserModel{DB: db},
+			userRepo: &mariadb.UserModel{DB: db},
 		}
 
 		authRoute := e.Group("/auth")

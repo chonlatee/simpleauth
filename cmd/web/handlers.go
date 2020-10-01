@@ -7,14 +7,13 @@ import (
 	"net/http"
 	"regexp"
 
-	"github.com/chonlatee/authserver/pkg/models/mariadb"
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/chonlatee/simpleauth/pkg/models"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type route struct {
-	userModel *mariadb.UserModel
+	userRepo models.UserRepository
 }
 
 func (r *route) register(c echo.Context) error {
@@ -66,7 +65,7 @@ func (r *route) register(c echo.Context) error {
 
 	ctx := c.Request().Context()
 
-	_, err = r.userModel.Insert(ctx, u.Username, u.Email, password)
+	_, err = r.userRepo.Insert(ctx, u.Username, u.Email, password)
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, struct {
@@ -94,7 +93,7 @@ func (r *route) login(c echo.Context) error {
 
 	ctx := c.Request().Context()
 
-	hashPassword, err := r.userModel.GetByEmail(ctx, uLogin.Email)
+	hashPassword, err := r.userRepo.GetByEmail(ctx, uLogin.Email)
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, struct {
@@ -152,4 +151,10 @@ func openDB() *sql.DB {
 
 	return db
 
+}
+
+func NewRoute(userRepo models.UserRepository) *route {
+	return &route{
+		userRepo: userRepo,
+	}
 }

@@ -1,4 +1,4 @@
-module github.com/chonlatee/authserver
+module github.com/chonlatee/simpleauth
 
 go 1.14
 
