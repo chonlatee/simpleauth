@@ -38,6 +38,12 @@ func (r *route) register(c echo.Context) error {
 		}{"Invalid username length"})
 	}
 
+	if len(u.Username) > 50 {
+		return c.JSON(http.StatusBadRequest, struct {
+			Message string `json:"message"`
+		}{"Invalid username length"})
+	}
+
 	if len(u.Password) < 6 {
 		return c.JSON(http.StatusBadRequest, struct {
 			Message string `json:"message"`
